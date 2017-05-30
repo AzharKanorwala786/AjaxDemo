@@ -1,43 +1,51 @@
 ﻿var CRUD = CRUD || {
 
- Init: function () {
+    Init: function () {
 
-     $('#btnsave').on('click',function () {
+        $('#btnsave').on('click', function () {
+            debugger;
+            CRUD.PostData($(this));
+        });
+        $('#btngetproducts').on('click', function () {
+            debugger;
+            CRUD.GetData();
+        });
+    },
+    PostData: function (formdata) {
+        debugger;
+        var form = $("#createProduct").serializeArray();
+        var url = formdata.data("url");
+        $.ajax({
+            type: "POST",
+            url: url,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            data: form,
+            cache: false,
+            success: function (res) {                
+                $("#divContainer").html("");
+                $("#divContainer").html(res);
+            },
+            error: function (res) {
+                //alert(res);
+            }
+        });
+    },
+    GetData: function ()  {
 
-         GetData();
-
-   });
-
-  function GetData() {
-
-    Name  =  $("#Name").val(),
-    Price =  $("Price").val(),
-    Image =  $("Image").val(),
-    Category = $("CategoryId").val()
-
-      var Data = JSON.stringify ({
-
-          "Name": Name,
-          "Price":Price,
-          "Image":Image, 
-          "Category":Category
-      });
-
-      $.ajax({
-          type: "POST",
-          url: "/Products/Create",
-          dataType: "json",
-          contentType: "application/json; charset=utf-8",
-          data: Data,
-          success: function (res) {
-              alert("Product Details Saved Successfully")
-          },
-          error: function (res) {
-
-              alert(res);
-          }
-      });
-
-        }
-    }
+        $.ajax({
+            type: "GET",
+            url: "/Default/Index",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            cache: false,
+            processData: false,
+            success: function (data) {
+                alert(data)
+            },
+            error: function (res) {
+                //alert(res);
+            }
+        });
+    },
 }
